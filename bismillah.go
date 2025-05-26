@@ -14,7 +14,6 @@ type CatatanTidur struct {
 	Segar       string
 	Ngantuk     string
 	Terganggu   string
-	Stres       string
 	Kopi        string
 }
 
@@ -78,11 +77,10 @@ func tampilkanKualitasTidur(data *[MaksData]CatatanTidur, jumlah int) {
 		jam := data[i].DurasiMenit / 60
 		menit := data[i].DurasiMenit % 60
 
-		// Penilaian kualitas tidur
 		var kualitas string
-		if data[i].JamTidur < 21 && jam == 8 {
+		if data[i].JamTidur <= 21 && jam == 8 {
 			kualitas = "Sangat Baik"
-		} else if data[i].JamTidur >= 21 && jam == 8 {
+		} else if data[i].JamTidur > 21 || jam == 8 {
 			kualitas = "Baik"
 		} else {
 			kualitas = "Buruk"
@@ -98,19 +96,16 @@ func tampilkanKualitasTidur(data *[MaksData]CatatanTidur, jumlah int) {
 	fmt.Println("\n ✨🔎 SCREENING 🔍✨")
 	fmt.Print("     Apakah Anda merasa segar saat bangun tidur (Ya/Tidak)? ")
 	fmt.Scan(&data[i].Segar)
-	fmt.Print("     Apakah Anda merasa ngantuk di siang hari meskipun sudah tidur cukup (Ya/Tidak)? ")
+	fmt.Print("     Apakah Anda merasa ngantuk setiap menjalani aktivitas (Ya/Tidak)? ")
 	fmt.Scan(&data[i].Ngantuk)
 	fmt.Print("     Apakah Anda merasa tidur terganggu oleh mimpi buruk, suara, atau gangguan lainnya (Ya/Tidak)? ")
 	fmt.Scan(&data[i].Terganggu)
-	fmt.Print("     Apakah Anda merasa stres atau cemas sebelum tidur (Ya/Tidak)? ")
-	fmt.Scan(&data[i].Stres)
 	fmt.Print("     Seberapa sering Anda minum kopi (Sering/Kadang/Tidak)? ")
 	fmt.Scan(&data[i].Kopi)
 }
 
 func tampilkanRiwayatTidur(data [MaksData]CatatanTidur, jumlah int, menuPilihan int) {
 	var i int
-	fmt.Println("\n======================== RIWAYAT TIDUR ========================")
 	awal := 0
 	if jumlah > 7 {
 		awal = jumlah - 7
@@ -132,30 +127,50 @@ func tampilkanRiwayatTidur(data [MaksData]CatatanTidur, jumlah int, menuPilihan 
 	if menuPilihan != 5 {
 		rata := totalDurasi / jumlahHari
 		fmt.Printf("\n📊 Rata-rata durasi tidur per minggu: %d jam %d menit\n", rata/60, rata%60)
+		fmt.Println(" ")
 		if data[i].Segar == "Tidak" {
-			fmt.Println("- Anda mungkin tidak mencapai tidur yang dalam atau berkualitas.")
+			fmt.Println(" Penyebab :")
+			fmt.Println("  1. Durasi tidur yang tidak cukup dan umumnya butuh 6-8 jam tidur per-malam")
+			fmt.Println("  2. Tidur terlalu larut dan tidak teratur")
+			fmt.Println("  3. Stres atau Overthinking")
+			fmt.Println(" Saran : Tidur dan bangun pada jam yang sama setiap hari")
 		}
 		if data[i].Ngantuk == "Ya" {
-			fmt.Println("- Rasa ngantuk di siang hari bisa jadi tanda kualitas tidur kurang.")
+			fmt.Println(" ")
+			fmt.Println(" Penyebab :")
+			fmt.Println("  1. Mengonsumsi makanan dengan kadar gula yang tinggi")
+			fmt.Println("  2. Kurang paparan sinar matahari pagi")
+			fmt.Println(" Saran : Aktif bergerak di siang hari, mengonsumsi makanan yang seimbang,")
+			fmt.Println("         dapatkan paparan cahaya alami di pagi hari, dan power nap (tidur")
+			fmt.Println("         siang singkat) 10-20 menit.")
 		}
 		if data[i].Terganggu == "Ya" {
-			fmt.Println("- Gangguan saat tidur mempengaruhi proses pemulihan tubuh.")
-		}
-		if data[i].Stres == "Ya" {
-			fmt.Println("- Stres dapat mengganggu kemampuan untuk tidur nyenyak.")
+			fmt.Println(" ")
+			fmt.Println(" Penyebab :")
+			fmt.Println("  1. Kondisi kamar yang tidak kondusif")
+			fmt.Println("  2. Pengaruh obat-obatan tertentu")
+			fmt.Println("  3. Stres dan kecemasan")
+			fmt.Println(" Saran : Hindari menatap layar sebelum tidur, serta hindari konsumsi")
+			fmt.Println("         kafein dan alkohol di malam hari.")
 		}
 		if data[i].Kopi == "Sering" {
-			fmt.Println("- Terlalu sering minum kopi bisa mengganggu pola tidur.")
+			fmt.Println(" ")
+			fmt.Println("Saran : Batasi konsumsi kopi maksimal 1-2 cangkir kopi per-hari,")
+			fmt.Println("        karena dapat menyebabkan ketergantungan, sulit tidur, dan")
+			fmt.Println("        gangguan pencernaan")
 		} else if data[i].Kopi == "Kadang" {
-			fmt.Println("- Minum kopi kadang-kadang masih tergolong aman, tapi tetap perlu dijaga.")
+			fmt.Println(" ")
+			fmt.Println("  Tetap jaga konsumsi kopi agar tidak menjadi kebiasaan harian yang berlebihan.")
 		} else {
-			fmt.Println("- Tidak minum kopi membantu Anda tidur lebih baik.")
+			fmt.Println(" ")
 		}
 	}
 	fmt.Println(" ")
 }
 
 func Insertionsort(A *[MaksData]CatatanTidur, jumlah int) {
+	fmt.Println(" ")
+	fmt.Println("Terkecil ke Terbesar")
 	for i := 0; i < jumlah; i++ {
 		hitungDurasi(&(*A)[i])
 	}
@@ -170,6 +185,22 @@ func Insertionsort(A *[MaksData]CatatanTidur, jumlah int) {
 		}
 		A[i] = temp
 	}
+	tampilkanRiwayatTidur(*A, jumlah, 5)
+	for i := 0; i < jumlah; i++ {
+		hitungDurasi(&(*A)[i])
+	}
+	fmt.Println("Terbesar ke Terkecil")
+	for pass := 1; pass < jumlah; pass++ {
+		temp := A[pass]
+		i := pass
+
+		for i > 0 && temp.DurasiMenit > A[i-1].DurasiMenit {
+			A[i] = A[i-1]
+			i--
+		}
+		A[i] = temp
+	}
+	tampilkanRiwayatTidur(*A, jumlah, 5)
 
 }
 
@@ -254,14 +285,14 @@ func main() {
 		fmt.Println("                          DAFTAR PILIHAN")
 		fmt.Println("  =============================================================")
 		fmt.Println("   1. Jadwal Tidur")
-		fmt.Println("   2. Tampilkan Data Jadwal Tidur")
+		fmt.Println("   2. Lihat Jadwal Tidur")
 		fmt.Println("   3. Kualitas Tidur")
 		fmt.Println("   4. Riwayat Tidur")
-		fmt.Println("   5. Pengurutan Data")
-		fmt.Println("   6. Pencarian Data")
-		fmt.Println("   7. Exit")
+		fmt.Println("   5. Urutkan Data")
+		fmt.Println("   6. Cari Data")
+		fmt.Println("   7. Keluar")
 		fmt.Println("  =============================================================")
-		fmt.Print("   Silahkan pilih salah satu opsi yang anda butuhkan : ")
+		fmt.Print("   Silakan pilih salah satu opsi yang anda butuhkan : ")
 
 		fmt.Scan(&pilihan)
 
@@ -285,19 +316,18 @@ func main() {
 			DataJadwalTidur(&dataTidur, jumlahData)
 		} else if pilihan == 3 {
 			tampilkanKualitasTidur(&dataTidur, jumlahData)
-
 		} else if pilihan == 4 {
+			fmt.Println("\n======================== RIWAYAT TIDUR ========================")
 			tampilkanRiwayatTidur(dataTidur, jumlahData, 0)
 		} else if pilihan == 5 {
 			Insertionsort(&dataTidur, jumlahData)
-			tampilkanRiwayatTidur(dataTidur, jumlahData, 5)
 		} else if pilihan == 6 {
 			fmt.Print("\n  🔍 Masukkan tanggal yang ingin dicari (yyyy-mm-dd): ")
 			var target string
 			fmt.Scan(&target)
 			cariTanggal(dataTidur, jumlahData, target)
 		} else {
-			fmt.Println("Pilihan tidak valid")
+			fmt.Println(" ")
 		}
 	}
 
