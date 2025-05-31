@@ -170,26 +170,7 @@ func tampilkanRiwayatTidur(data [MaksData]CatatanTidur, jumlah int, menuPilihan 
 
 func Insertionsort(A *[MaksData]CatatanTidur, jumlah int) {
 	fmt.Println(" ")
-	fmt.Println("Terkecil ke Terbesar")
-	for i := 0; i < jumlah; i++ {
-		hitungDurasi(&(*A)[i])
-	}
-
-	for pass := 1; pass < jumlah; pass++ {
-		temp := A[pass]
-		i := pass
-
-		for i > 0 && temp.DurasiMenit < A[i-1].DurasiMenit {
-			A[i] = A[i-1]
-			i--
-		}
-		A[i] = temp
-	}
-	tampilkanRiwayatTidur(*A, jumlah, 5)
-	for i := 0; i < jumlah; i++ {
-		hitungDurasi(&(*A)[i])
-	}
-	fmt.Println("Terbesar ke Terkecil")
+	fmt.Println(" Terbesar ke Terkecil")
 	for pass := 1; pass < jumlah; pass++ {
 		temp := A[pass]
 		i := pass
@@ -204,8 +185,8 @@ func Insertionsort(A *[MaksData]CatatanTidur, jumlah int) {
 
 }
 
-func DataJadwalTidur(A *[MaksData]CatatanTidur, jumlah int) {
-	for i := 0; i < jumlah; i++ {
+func DataJadwalTidur(A *[MaksData]CatatanTidur, jumlah *int) {
+	for i := 0; i < *jumlah; i++ {
 		jam := A[i].DurasiMenit / 60
 		menit := A[i].DurasiMenit % 60
 		fmt.Println(" ")
@@ -232,7 +213,7 @@ func DataJadwalTidur(A *[MaksData]CatatanTidur, jumlah int) {
 		fmt.Println(" ")
 		fmt.Print("     Hari ke : ")
 		fmt.Scan(&ubah)
-		if ubah >= 1 && ubah <= jumlah {
+		if ubah >= 1 && ubah <= *jumlah {
 			idx := ubah - 1
 			fmt.Print("     Tanggal : ")
 			fmt.Scan(&A[idx].Tanggal)
@@ -248,12 +229,12 @@ func DataJadwalTidur(A *[MaksData]CatatanTidur, jumlah int) {
 		var hapus int
 		fmt.Print("     Hari ke : ")
 		fmt.Scan(&hapus)
-		if hapus >= 1 && hapus <= jumlah {
+		if hapus >= 1 && hapus <= *jumlah {
 			idx := hapus - 1
-			for i := idx; i < jumlah-1; i++ {
+			for i := idx; i < *jumlah-1; i++ {
 				A[i] = A[i+1]
 			}
-			jumlah--
+			*jumlah--
 		} else {
 			fmt.Println("     Hari tidak valid.")
 		}
@@ -313,7 +294,7 @@ func main() {
 				hitungDurasi(&dataTidur[i])
 			}
 		} else if pilihan == 2 {
-			DataJadwalTidur(&dataTidur, jumlahData)
+			DataJadwalTidur(&dataTidur, &jumlahData)
 		} else if pilihan == 3 {
 			tampilkanKualitasTidur(&dataTidur, jumlahData)
 		} else if pilihan == 4 {
